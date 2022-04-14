@@ -29,6 +29,19 @@ import edu.eci.ieti.betsGameOver.service.UserService;
 public class UserController {
 	
     private final UserService userService;
+    
+    private static class IdAutoIncrement {
+		 
+    	private static final Object mutex = new Object();
+    	private static Long currentValue = -1L;
+    	
+    	private static Long getNextValue() {
+    		synchronized(mutex) {
+    			currentValue += 1;
+        		return currentValue;
+    		}
+    	}
+    }
 
     public UserController(@Autowired UserService userService) {
         this.userService = userService;
@@ -46,8 +59,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody UserDto userDto, @RequestParam String referedUser) {
-        List<User> users = userService.getAll();
-        String id = (users.size() > 0)?String.valueOf((Integer.parseInt(users.get(users.size()-1).getId())+1)):"0";
+        String id = String.valueOf(UserController.IdAutoIncrement.getNextValue());
         User user = new User(userDto, LocalDate.now(), id, referedUser);
         return ResponseEntity.status(HttpStatus.OK).body(userService.create(user));
     }
