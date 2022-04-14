@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import edu.eci.ieti.betsGameOver.data.User;
+import edu.eci.ieti.betsGameOver.model.User;
 import edu.eci.ieti.betsGameOver.dto.UserDto;
 import edu.eci.ieti.betsGameOver.service.UserService;
 

@@ -1,4 +1,4 @@
-package edu.eci.ieti.betsGameOver.data;
+package edu.eci.ieti.betsGameOver.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
+import edu.eci.ieti.betsGameOver.data.RoleEnum;
 import edu.eci.ieti.betsGameOver.dto.UserDto;
 
 @Document(collection = "users")
@@ -18,25 +19,31 @@ public class User {
     @Id
     private String id;
     private String name;
+    private String lastName;
     @Indexed(unique = true)
     private String email;
-    private String lastName;
+    @Indexed(unique = true)
+    private String username;
     private LocalDate createdAt;
     private String passwordHash;
     private List<RoleEnum> roles;
+    private int amount = 0;
+    private String referedUser;
 
     public User(){
 
     }
 
-    public User(UserDto userDto, LocalDate localDate, String id) {
+    public User(UserDto userDto, LocalDate localDate, String id, String referedUser) { 
+        this.id = id;
         this.name = userDto.getName();
-        this.email = userDto.getEmail();
         this.lastName = userDto.getLastName();
+        this.email = userDto.getEmail();
+        this.username = userDto.getUsername();
         this.createdAt = localDate;
-        this.id=id;
         this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
         roles = new ArrayList<>(Collections.singleton( RoleEnum.USER ));
+        this.referedUser = referedUser; 
     }
 
     public String getPasswordHash() {
@@ -94,13 +101,38 @@ public class User {
         return createdAt;
     }
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String userName) {
+		this.username = userName;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public String getReferedUser() {
+		return referedUser;
+	}
+
+	public void setReferedUser(String referedUser) {
+		this.referedUser = referedUser;
+	}
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 '}';
     }

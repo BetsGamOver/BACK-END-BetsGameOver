@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.eci.ieti.betsGameOver.data.User;
+import edu.eci.ieti.betsGameOver.model.User;
 import edu.eci.ieti.betsGameOver.dto.UserDto;
 import edu.eci.ieti.betsGameOver.service.UserService;
 
@@ -44,10 +45,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody UserDto userDto) {
+    public ResponseEntity<User> create(@RequestBody UserDto userDto, @RequestParam String referedUser) {
         List<User> users = userService.getAll();
         String id = (users.size() > 0)?String.valueOf((Integer.parseInt(users.get(users.size()-1).getId())+1)):"0";
-        User user = new User(userDto, LocalDate.now(), id);
+        User user = new User(userDto, LocalDate.now(), id, referedUser);
         return ResponseEntity.status(HttpStatus.OK).body(userService.create(user));
     }
 

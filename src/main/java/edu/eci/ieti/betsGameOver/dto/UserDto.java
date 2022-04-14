@@ -3,18 +3,20 @@ package edu.eci.ieti.betsGameOver.dto;
 public class UserDto {
 	
     private String name;
-    private String email;
     private String lastName;
+    private String username;
+    private String email;
     private String password;
 
     public UserDto(){
     	
     }
 
-    public UserDto(String name, String email, String lastName, String password) {
+    public UserDto(String name, String lastName, String username, String email, String password) {
         this.name = name;
-        this.email = email;
         this.lastName = lastName;
+        this.username = username;
+        this.email = email;
         this.password=password;
     }
 
@@ -34,14 +36,6 @@ public class UserDto {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getLastName() {
         return lastName;
     }
@@ -50,12 +44,29 @@ public class UserDto {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String userName) {
+		this.username = userName;
+	}
+
     @Override
     public String toString() {
         return "UserDto{" +
                 "name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", userName='" + username + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

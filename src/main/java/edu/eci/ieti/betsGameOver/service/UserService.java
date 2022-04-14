@@ -3,7 +3,7 @@ package edu.eci.ieti.betsGameOver.service;
 import java.util.Date;
 import java.util.List;
 
-import edu.eci.ieti.betsGameOver.data.User;
+import edu.eci.ieti.betsGameOver.model.User;
 import edu.eci.ieti.betsGameOver.dto.UserDto;
 
 public interface UserService {
