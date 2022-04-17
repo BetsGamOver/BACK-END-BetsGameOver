@@ -6,7 +6,7 @@ jobs:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker: # run the steps with Docker
-      - image: cimg/openjdk:17.0.1 # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/openjdk:17.0.1-jdk-buster-browsers # ...with this image as the primary container; this is where all `steps` will run
     steps:
       - checkout
       - restore_cache:
@@ -34,7 +34,7 @@ jobs:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker: # run the steps with Docker
-      - image: cimg/openjdk:17.0.1 # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/openjdk:17.0.1-jdk-buster-browsers # ...with this image as the primary container; this is where all `steps` will run
     steps:
       - checkout
       - attach_workspace:
