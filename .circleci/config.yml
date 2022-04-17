@@ -28,6 +28,7 @@ jobs:
           root: .
           paths:
             - build
+
   test:
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
