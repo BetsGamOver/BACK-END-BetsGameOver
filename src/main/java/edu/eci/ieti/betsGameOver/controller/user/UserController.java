@@ -1,9 +1,5 @@
-package edu.eci.ieti.betsGameOver.controller;
+package edu.eci.ieti.betsGameOver.controller.user;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -29,19 +25,6 @@ import edu.eci.ieti.betsGameOver.service.UserService;
 public class UserController {
 	
     private final UserService userService;
-    
-    private static class IdAutoIncrement {
-		 
-    	private static final Object mutex = new Object();
-    	private static Long currentValue = -1L;
-    	
-    	private static Long getNextValue() {
-    		synchronized(mutex) {
-    			currentValue += 1;
-        		return currentValue;
-    		}
-    	}
-    }
 
     public UserController(@Autowired UserService userService) {
         this.userService = userService;
@@ -59,8 +42,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody UserDto userDto, @RequestParam String referedUser) {
-        String id = String.valueOf(UserController.IdAutoIncrement.getNextValue());
-        User user = new User(userDto, LocalDate.now(), id, referedUser);
+        User user = new User(userDto, referedUser);
         return ResponseEntity.status(HttpStatus.OK).body(userService.create(user));
     }
 
@@ -78,16 +60,5 @@ public class UserController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.ordinal()).body((false));
         }
-    }
-
-    @GetMapping("/findUsersWithNameOrLastNameLike/{queryparam}")
-    public ResponseEntity<List<User>> findUsersWithNameOrLastNameLike(@PathVariable String queryparam) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findUsersWithNameOrLastNameLike(queryparam));
-    }
-    
-    @GetMapping("/FindByDate/{date}")
-    public ResponseEntity<List<User>> findUsersCreatedAfter(@PathVariable String date) throws ParseException{
-        Date formatedDate = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-        return new ResponseEntity<List<User>>(userService.findUsersCreatedAfter(formatedDate), HttpStatus.OK);
     }
 }

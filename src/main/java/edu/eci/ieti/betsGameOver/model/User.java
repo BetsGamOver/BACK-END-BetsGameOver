@@ -16,6 +16,17 @@ import edu.eci.ieti.betsGameOver.dto.UserDto;
 @Document(collection = "users")
 public class User {
 	
+	private static class IdSequence {
+    	private static final Object mutex = new Object();
+    	private static Long currentValue = -1L;	
+    	private static Long getNextValue() {
+    		synchronized(mutex) {
+    			currentValue += 1;
+        		return currentValue;
+    		}
+    	}
+    };
+	
     @Id
     private String id;
     private String name;
@@ -34,13 +45,13 @@ public class User {
 
     }
 
-    public User(UserDto userDto, LocalDate localDate, String id, String referedUser) { 
-        this.id = id;
+    public User(UserDto userDto, String referedUser) { 
+        this.id = String.valueOf(User.IdSequence.getNextValue());
         this.name = userDto.getName();
         this.lastName = userDto.getLastName();
         this.email = userDto.getEmail();
         this.username = userDto.getUsername();
-        this.createdAt = localDate;
+        this.createdAt = LocalDate.now();
         this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
         roles = new ArrayList<>(Collections.singleton( RoleEnum.USER ));
         this.referedUser = referedUser; 
